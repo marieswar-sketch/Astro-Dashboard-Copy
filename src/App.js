@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { logUserVisit, fetchUserMetrics, fetchMetricDefinitions } from "./api";
 
-const astroLogo = "/astro-logo.png";
-const astroDescription = "/astro-description.jpg";
+// Use correct public path for logo image
+const astroLogo = process.env.PUBLIC_URL + "/Astro-Logo.jpg";
 
 export default function App() {
   const [name, setName] = useState("");
   const [entered, setEntered] = useState(false);
-  const [metrics, setMetrics] = useState([]);
-  const [definitions, setDefinitions] = useState([]);
+  const [metrics, setMetrics] = useState({});
+  const [definitions, setDefinitions] = useState({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -35,151 +35,118 @@ export default function App() {
       paddingBottom: 50
     }}>
       <header style={{ textAlign: "center", padding: "32px 16px 8px" }}>
-        <img src={astroLogo} alt="Astro Logo" style={{ width: 80, borderRadius: "50%" }} />
-        <h1 style={{ fontWeight: "bold", color: "#fff", fontSize: 34, marginBottom: 4 }}>Astro Dashboard</h1>
-      </header>
-      <section style={{ textAlign: "center", marginBottom: 32 }}>
-        <img src={astroDescription} alt="Astro Description" style={{ maxWidth: "92vw", borderRadius: 12, boxShadow: "0 8px 32px #2222" }} />
-      </section>
-
-      <section>
-        <h2 style={{ textAlign: "center", color: "#fff", fontSize: 26 }}>Metric Definitions</h2>
-        <div style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          marginBottom: 24
+        <img
+          src={astroLogo}
+          alt="Astro Logo"
+          style={{ width: 80, borderRadius: 50 }}
+        />
+        <h1 style={{
+          fontWeight: "bold",
+          color: "#fff",
+          fontSize: 34,
+          marginBottom: 4
         }}>
-          {definitions.length > 0
-            ? definitions.map(metric => (
-              <div key={metric.name} style={{
-                background: "white",
-                margin: 12,
-                padding: 18,
-                borderRadius: 16,
-                boxShadow: "0 4px 24px #4441",
-                width: 270,
-                minWidth: 200,
-                maxWidth: "92vw"
-              }}>
-                <h3 style={{ color: "#4e54c8", fontWeight: "bold" }}>{metric.name}</h3>
-                <p style={{ fontSize: 15 }}>{metric.def}</p>
-              </div>
-            ))
-            : <div style={{ color: "#fff" }}>Loading definitions...</div>
-          }
-        </div>
-      </section>
+          Astro Dashboard
+        </h1>
+      </header>
 
-      <section style={{ textAlign: "center" }}>
-        {!entered ? (
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              background: "white",
-              padding: 24,
-              borderRadius: 16,
-              boxShadow: "0 4px 20px #2221",
-              display: "inline-block"
-            }}
-          >
-            <label style={{ fontSize: 20, fontWeight: "bold" }}>Enter your name:</label>
-            <input
-              type="text"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              style={{
-                fontSize: 18,
-                padding: 8,
-                margin: "12px 0",
-                borderRadius: 8,
-                border: "1px solid #ccc"
-              }}
-              placeholder="Type your name..."
-            />
-            <br />
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                fontSize: 18,
-                padding: "10px 28px",
-                borderRadius: 8,
-                background: "linear-gradient(90deg,#4e54c8,#8f94fb)",
-                color: "white",
-                border: "none",
-                fontWeight: "bold",
-                boxShadow: "0 2px 10px #2221"
-              }}
-            >
-              {loading ? "Loading..." : "View Dashboard"}
-            </button>
-          </form>
-        ) : (
-          <>
-            <h2 style={{ color: "#fff", marginTop: 24 }}>Your Metrics</h2>
+      {/* Add your metrics cards below */}
+      <div style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: "32px 24px",
+        margin: "28px 0 0 0"
+      }}>
+        {Object.keys(definitions).map(key => (
+          <div key={key} style={{
+            background: "#fff",
+            borderRadius: 22,
+            boxShadow: "0 4px 24px #4e54c855",
+            padding: "30px 22px",
+            margin: "0 10px 28px 10px",
+            width: 280,
+            maxWidth: "94vw"
+          }}>
             <div style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              marginTop: 24
+              fontWeight: "bold",
+              fontSize: 22,
+              color: "#4e54c8",
+              marginBottom: 10
             }}>
-              {metrics.length === 0 ? (
-                <div style={{
-                  background: "#fff",
-                  borderRadius: 12,
-                  color: "#4e54c8",
-                  padding: 20,
-                  fontSize: 20
-                }}>
-                  No metrics found for <strong>{name}</strong>.
-                </div>
-              ) : (
-                metrics.map((row, i) => (
-                  <div key={i} style={{
-                    background: "white",
-                    margin: 12,
-                    padding: 22,
-                    borderRadius: 16,
-                    boxShadow: "0 4px 24px #4443",
-                    minWidth: 220,
-                    maxWidth: 400
-                  }}>
-                    <h3 style={{ color: "#8f94fb", marginBottom: 4 }}>{row.astro_name || name}</h3>
-                    <ul style={{ fontSize: 15, paddingLeft: "0" }}>
-                      {Object.entries(row).map(([key, val]) =>
-                        key !== "astro_id" && key !== "astro_name"
-                          ? <li key={key}><strong>{key}</strong>: {val}</li>
-                          : null
-                      )}
-                    </ul>
-                  </div>
-                ))
-              )}
+              {key}
             </div>
-            <button
-              style={{
-                margin: "32px 0 0",
-                fontSize: 16,
-                padding: "8px 18px",
-                borderRadius: 8,
-                background: "#4e54c8",
-                color: "white",
-                border: "none",
-                fontWeight: "bold",
-                boxShadow: "0 1px 7px #2221",
-              }}
-              onClick={() => {
-                setEntered(false);
-                setName("");
-                setMetrics([]);
-              }}
-            >
-              Try another name
-            </button>
-          </>
-        )}
-      </section>
+            <div style={{
+              fontSize: 17,
+              color: "#222"
+            }}>
+              {definitions[key]}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Name entry section */}
+      <form onSubmit={handleSubmit} style={{ textAlign: "center", margin: "32px 0" }}>
+        <div style={{ fontSize: 22, fontWeight: "bold", marginBottom: 12 }}>Enter your name:</div>
+        <input
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          style={{
+            padding: "14px 16px",
+            fontSize: 15,
+            borderRadius: 8,
+            border: "2px solid #8f94fb",
+            width: 240,
+            marginBottom: 12
+          }}
+        />
+        <br />
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            padding: "14px 44px",
+            fontSize: 17,
+            background: "#4e54c8",
+            color: "#fff",
+            border: "none",
+            borderRadius: 8,
+            marginTop: 12,
+            boxShadow: "0 2px 14px #2222"
+          }}
+        >
+          {loading ? "Loading..." : "Submit"}
+        </button>
+      </form>
+
+      {/* Results Section: show user metrics if entered */}
+      {entered && (
+        <div style={{
+          textAlign: "center",
+          background: "#fff",
+          borderRadius: 22,
+          boxShadow: "0 4px 24px #4e54c855",
+          padding: "30px 22px",
+          margin: "0 10px 28px 10px",
+          maxWidth: 480,
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}>
+          <div style={{
+            fontWeight: "bold",
+            color: "#4e54c8",
+            fontSize: 22,
+            marginBottom: 10
+          }}>
+            Results for {name}
+          </div>
+          <pre style={{ textAlign: "left", fontSize: 15 }}>
+            {JSON.stringify(metrics, null, 2)}
+          </pre>
+        </div>
+      )}
     </div>
   );
 }
