@@ -4,10 +4,11 @@ const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzBrFgXEMOak7EUklFUB
 // Logging user visit in "Logs" Sheet
 export async function logUserVisit(name) {
   try {
+    // Using text/plain to avoid CORS preflight (OPTIONS) request which often fails with GAS
     return await fetch(WEBAPP_URL, {
       method: "POST",
       body: JSON.stringify({ name, timestamp: new Date().toISOString() }),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "text/plain" }
     });
   } catch (error) {
     console.error("Error logging visit:", error);
