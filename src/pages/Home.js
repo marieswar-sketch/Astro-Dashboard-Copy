@@ -30,7 +30,7 @@ export default function Home({ setMetrics, setEntered }) {
     return (
         <div style={{
             fontFamily: "'Poppins', sans-serif",
-            background: "linear-gradient(135deg, #1e1e2f, #4e54c8, #8f94fb)",
+            background: "linear-gradient(135deg, #FF512F, #DD2476, #FF9966)",
             minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
@@ -78,7 +78,7 @@ export default function Home({ setMetrics, setEntered }) {
                             border: "none",
                             fontSize: "1rem",
                             fontWeight: "bold",
-                            background: "linear-gradient(90deg, #4e54c8, #8f94fb)",
+                            background: "linear-gradient(90deg, #FF512F, #DD2476)",
                             color: "white",
                             cursor: loading ? "not-allowed" : "pointer",
                             transition: "transform 0.2s",

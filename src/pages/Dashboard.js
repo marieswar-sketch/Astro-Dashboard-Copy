@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchMetricDefinitions } from "../api";
 
 export default function Dashboard({ metrics, setEntered, setMetrics }) {
     const navigate = useNavigate();
+    const [definitions, setDefinitions] = useState([]);
+
+    useEffect(() => {
+        fetchMetricDefinitions().then(setDefinitions);
+    }, []);
 
     const handleLogout = () => {
         setEntered(false);
@@ -13,7 +19,7 @@ export default function Dashboard({ metrics, setEntered, setMetrics }) {
     return (
         <div style={{
             fontFamily: "'Poppins', sans-serif",
-            background: "linear-gradient(135deg, #1e1e2f, #2a2a40)",
+            background: "linear-gradient(135deg, #FF512F, #DD2476, #FF9966)",
             minHeight: "100vh",
             color: "#fff",
             padding: "40px 20px"
@@ -26,7 +32,7 @@ export default function Dashboard({ metrics, setEntered, setMetrics }) {
                 maxWidth: "1200px",
                 margin: "0 auto 40px"
             }}>
-                <h1 style={{ fontSize: "2rem", fontWeight: "bold", background: "linear-gradient(90deg, #8f94fb, #4e54c8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <h1 style={{ fontSize: "2rem", fontWeight: "bold", color: "#fff", textShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>
                     Your Performance
                 </h1>
                 <button
@@ -66,7 +72,7 @@ export default function Dashboard({ metrics, setEntered, setMetrics }) {
                             border: "1px solid rgba(255, 255, 255, 0.1)",
                             boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.2)"
                         }}>
-                            <h3 style={{ color: "#8f94fb", marginBottom: "16px", fontSize: "1.5rem" }}>{row.astro_name}</h3>
+                            <h3 style={{ color: "#FFD700", marginBottom: "16px", fontSize: "1.5rem", textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>{row.astro_name}</h3>
                             <ul style={{ listStyle: "none", padding: 0 }}>
                                 {Object.entries(row).map(([key, val]) =>
                                     key !== "astro_id" && key !== "astro_name" ? (
@@ -87,6 +93,33 @@ export default function Dashboard({ metrics, setEntered, setMetrics }) {
                     ))
                 )}
             </div>
+
+            <section style={{ maxWidth: "1200px", margin: "60px auto 0" }}>
+                <h2 style={{ textAlign: "center", color: "#fff", fontSize: "1.8rem", marginBottom: "30px", textShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>Metric Definitions</h2>
+                <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                    gap: "20px"
+                }}>
+                    {definitions.length > 0 ? (
+                        definitions.map(metric => (
+                            <div key={metric.name} style={{
+                                background: "rgba(255, 255, 255, 0.1)",
+                                backdropFilter: "blur(10px)",
+                                padding: "20px",
+                                borderRadius: "16px",
+                                border: "1px solid rgba(255, 255, 255, 0.2)",
+                                boxShadow: "0 4px 16px rgba(0,0,0,0.1)"
+                            }}>
+                                <h3 style={{ color: "#FFD700", fontWeight: "bold", marginBottom: "10px", fontSize: "1.1rem" }}>{metric.name}</h3>
+                                <p style={{ fontSize: "0.9rem", lineHeight: "1.5", opacity: 0.9 }}>{metric.def}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <div style={{ color: "#fff", textAlign: "center", gridColumn: "1 / -1" }}>Loading definitions...</div>
+                    )}
+                </div>
+            </section>
         </div>
     );
 }
