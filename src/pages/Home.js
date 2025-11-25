@@ -30,28 +30,27 @@ export default function Home({ setMetrics, setEntered }) {
     return (
         <div style={{
             fontFamily: "'Poppins', sans-serif",
-            background: "linear-gradient(135deg, #FF512F, #DD2476, #FF9966)",
+            background: "linear-gradient(135deg,#e0eafc,#cfdef3)",
             minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            color: "#fff"
+            color: "#222"
         }}>
             <div style={{
-                background: "rgba(255, 255, 255, 0.1)",
-                backdropFilter: "blur(10px)",
+                background: "#fff",
                 padding: "40px",
                 borderRadius: "20px",
-                boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
-                border: "1px solid rgba(255, 255, 255, 0.18)",
+                boxShadow: "0 8px 32px 0 rgba(160,180,230,0.18)",
+                border: "1px solid #dde1e6",
                 textAlign: "center",
                 maxWidth: "400px",
                 width: "90%"
             }}>
-                <img src={astroLogo} alt="Astro Logo" style={{ width: 100, borderRadius: "50%", marginBottom: 20, border: "4px solid rgba(255,255,255,0.2)" }} />
-                <h1 style={{ fontWeight: "700", fontSize: "2rem", marginBottom: "10px" }}>Astro Dashboard</h1>
-                <p style={{ marginBottom: "30px", opacity: 0.8 }}>Enter your name to view your performance metrics.</p>
+                <img src={astroLogo} alt="Astro Logo" style={{ width: 100, borderRadius: "50%", marginBottom: 20, border: "4px solid #e9eafc" }} />
+                <h1 style={{ fontWeight: "700", fontSize: "2rem", marginBottom: "10px", color: "#222" }}>Astro Dashboard</h1>
+                <p style={{ marginBottom: "30px", opacity: 0.85 }}>Enter your name to view your performance metrics.</p>
 
                 <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                     <input
@@ -61,10 +60,10 @@ export default function Home({ setMetrics, setEntered }) {
                         style={{
                             padding: "12px 20px",
                             borderRadius: "10px",
-                            border: "none",
+                            border: "1px solid #cfdef3",
                             outline: "none",
                             fontSize: "1rem",
-                            background: "rgba(255, 255, 255, 0.9)",
+                            background: "#f5faff",
                             color: "#333"
                         }}
                         placeholder="Your Name"
@@ -78,11 +77,11 @@ export default function Home({ setMetrics, setEntered }) {
                             border: "none",
                             fontSize: "1rem",
                             fontWeight: "bold",
-                            background: "linear-gradient(90deg, #FF512F, #DD2476)",
-                            color: "white",
+                            background: "linear-gradient(90deg,#71c8f8,#b6e2ff)",
+                            color: "#222",
                             cursor: loading ? "not-allowed" : "pointer",
                             transition: "transform 0.2s",
-                            boxShadow: "0 4px 15px rgba(0,0,0,0.2)"
+                            boxShadow: "0 4px 15px rgba(180,230,250,0.12)"
                         }}
                     >
                         {loading ? "Loading..." : "View Dashboard"}
