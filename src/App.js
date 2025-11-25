@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { logUserVisit, fetchUserMetrics, fetchMetricDefinitions } from "./api";
 
-const astroLogo = "/astro-logo.png";
-const astroDescription = "/astro-description.jpg";
+const astroLogo = process.env.PUBLIC_URL + "/Astro-Logo.png";
 
 export default function App() {
   const [name, setName] = useState("");
@@ -19,11 +18,17 @@ export default function App() {
     e.preventDefault();
     if (!name.trim()) return;
     setLoading(true);
-    await logUserVisit(name);
-    const userMetrics = await fetchUserMetrics(name);
-    setMetrics(userMetrics);
-    setEntered(true);
-    setLoading(false);
+    try {
+      await logUserVisit(name);
+      const userMetrics = await fetchUserMetrics(name);
+      setMetrics(userMetrics);
+      setEntered(true);
+    } catch (error) {
+      console.error("Error fetching metrics:", error);
+      alert("Failed to load dashboard. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -38,9 +43,7 @@ export default function App() {
         <img src={astroLogo} alt="Astro Logo" style={{ width: 80, borderRadius: "50%" }} />
         <h1 style={{ fontWeight: "bold", color: "#fff", fontSize: 34, marginBottom: 4 }}>Astro Dashboard</h1>
       </header>
-      <section style={{ textAlign: "center", marginBottom: 32 }}>
-        <img src={astroDescription} alt="Astro Description" style={{ maxWidth: "92vw", borderRadius: 12, boxShadow: "0 8px 32px #2222" }} />
-      </section>
+
 
       <section>
         <h2 style={{ textAlign: "center", color: "#fff", fontSize: 26 }}>Metric Definitions</h2>

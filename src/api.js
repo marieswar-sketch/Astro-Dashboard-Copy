@@ -3,20 +3,29 @@ const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzBrFgXEMOak7EUklFUB
 
 // Logging user visit in "Logs" Sheet
 export async function logUserVisit(name) {
-  return fetch(WEBAPP_URL, {
-    method: "POST",
-    body: JSON.stringify({ name, timestamp: new Date().toISOString() }),
-    headers: { "Content-Type": "application/json" }
-  });
+  try {
+    return await fetch(WEBAPP_URL, {
+      method: "POST",
+      body: JSON.stringify({ name, timestamp: new Date().toISOString() }),
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (error) {
+    console.error("Error logging visit:", error);
+  }
 }
 
 // Fetching user metrics from "Astro weekly performance" Sheet
 export async function fetchUserMetrics(name) {
-  const url = `${WEBAPP_URL}?name=${encodeURIComponent(name)}`;
-  const res = await fetch(url);
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.metrics || [];
+  try {
+    const url = `${WEBAPP_URL}?name=${encodeURIComponent(name)}`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.metrics || [];
+  } catch (error) {
+    console.error("Error fetching metrics:", error);
+    return [];
+  }
 }
 
 // Metric definitions (always exported for App.js)
